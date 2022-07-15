@@ -37,6 +37,30 @@ async function main(){
         })
     })
 
+    app.get('/search', async function(req, res){
+
+        let query = 'SELECT * from actor WHERE 1';
+        let bindings = []
+        
+        if (req.query.first_name) {
+            query += ` AND first_name LIKE ?`
+            bindings.push('%' + req.query.first_name + '%')
+        }
+
+        if (req.query.last_name) {
+            query += ` AND last_name LIKE ?`
+            bindings.push('%' + req.query.last_name + '%')
+        }
+
+        console.log(query, bindings) // XSS CSRF SQL injection
+
+        let [actors] = await connection.execute(query, bindings);
+
+        res.render('search', {
+            'actors': actors
+        })
+
+    })
     
 }
 main();
