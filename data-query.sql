@@ -70,3 +70,16 @@ LIMIT 3
 
 SELECT * FROM orders
 WHERE orderDate BETWEEN '2003-01-01' AND '2003-12-31';
+
+
+-- Subquery
+SELECT * from customers where creditLimit > (SELECT avg(creditLimit) from customers)
+
+SELECT * from products where productCode 
+NOT IN (SELECT distinct(productCode) FROM orderdetails);
+
+SELECT employees.employeeNumber, sum(amount) from employees 
+JOIN customers ON employees.employeeNumber = customers.salesRepEmployeeNumber
+JOIN payments on customers.customerNumber = payments.customerNumber
+GROUP BY employees.employeeNumber
+HAVING sum(amount) > (SELECT sum(amount)*0.1 from payments)
