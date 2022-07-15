@@ -46,3 +46,27 @@ SELECT * FROM payments where paymentDate BETWEEN '2003-01-01' AND '2003-06-31';
 
 SELECT checkNumber, YEAR(paymentDate) from payments;
 SELECT checkNumber, YEAR(paymentDate), MONTH(paymentDate), DAY(paymentDate) from payments where YEAR(paymentDate) = 2003;
+
+-- Aggregate functions
+SELECT count(*) FROM employees;
+
+SELECT sum(quantityOrdered) FROM orderdetails; 
+SELECT sum(quantityOrdered) FROM orderdetails where productCode='S18_1749';
+SELECT sum(quantityOrdered * priceEach) FROM orderdetails where productCode='S18_1749';
+SELECT sum(quantityOrdered * priceEach) as 'Total worth ordered' FROM orderdetails where productCode='S18_1749';
+SELECT sum(amount) FROM payments where paymentDate BETWEEN '2003-06-01' AND '2003-06-31';
+SELECT sum(amount) FROM payments where paymentDate month(paymentDate)=6 and year(paymentDate)=2003;
+
+-- Group By 
+SELECT country, count(*) FROM customers group by country; -- to select the column that is grouped by and AGGREGATE function
+SELECT country, avg(creditLimit) FROM customers group by country;
+
+SELECT country, firstName, lastName, email, avg(creditLimit), count(*) from customers
+JOIN employees on customers.salesRepEmployeeNumber = employees.employeeNumber
+WHERE salesRepEmployeeNumber = 1504
+GROUP BY country, firstName, lastName, email
+ORDER BY avg(creditLimit)
+LIMIT 3
+
+SELECT * FROM orders
+WHERE orderDate BETWEEN '2003-01-01' AND '2003-12-31';
