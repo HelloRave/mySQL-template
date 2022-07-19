@@ -59,9 +59,39 @@ async function main(){
         res.render('search', {
             'actors': actors
         })
-
     })
     
+    app.get('/category', async function(req, res){
+        const [category] = await connection.execute('SELECT * from category')
+        res.render('category',{
+            category: category
+        })
+    })
+
+    app.post('/category', async function(req, res){
+        const query = 'INSERT INTO category (name) values (?)'
+        const bindings = [req.body.name]
+        await connection.execute(query, bindings)
+        res.redirect('/category')
+    })
+
+    app.get('/category/:category_id/update', async function(req, res){
+        const query = 'SELECT * from category WHERE category_id = ?'
+        const bindings = [req.params.category_id]
+        let [categories] = await connection.execute(query, bindings)
+
+        res.render('update-category',{
+            categories: categories[0]
+        })
+    })
+
+    app.post('/category/:category_id/update', async function(req, res){
+        const query = 'UPDATE category SET name = ? WHERE category_id = ?'
+        const bindings = [req.body.name, req.params.category_id]
+        await connection.execute(query, bindings)
+
+        res.redirect('/category')
+    })
 }
 main();
 

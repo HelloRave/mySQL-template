@@ -1,0 +1,32 @@
+{{#extends 'base'}}
+{{#block 'content'}}
+<table class="table">
+    <thead>
+        <th>ID</th>
+        <th>Category</th>
+        <th></th>
+    </thead>
+    <tbody>
+        {{#each category}}
+        <tr>
+            <td>{{this.category_id}}</td>
+            <td>{{this.name}}</td>
+            <td>
+                <a href="/category/{{this.category_id}}/update" class="btn btn-success">Update</a>
+                <a href="" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<form method="POST">
+    <h2>Add New Category</h2>
+    <div>
+        <label for="">Name of category:</label>
+        <input type="text" name='name'/>
+        <input type="submit" class="btn btn-primary" value="Add" />
+    </div>
+</form>
+
+{{/block}}
+{{/extends}}
